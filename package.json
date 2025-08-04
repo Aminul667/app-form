@@ -1,0 +1,38 @@
+{
+  "name": "app-form",
+  "version": "1.0.6",
+  "description": "Reusable form components with react-hook-form, zod, and shadcn/ui",
+  "main": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "template"
+  ],
+  "bin": {
+    "app-form": "./bin/index.js"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [],
+  "author": "Rahat",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2"
+  },
+  "peerDependencies": {
+    "@hookform/resolvers": "^5.2.1",
+    "class-variance-authority": "^0.7.1",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "react-hook-form": "^7.62.0",
+    "zod": "^4.0.14"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "clsx": "^2.1.1"
+  }
+}
