@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useForm,
   SubmitHandler,
@@ -18,6 +18,7 @@ type AppFormProps<T extends FieldValues> = {
   children: (methods: UseFormReturn<T>) => React.ReactNode;
   defaultValues?: DefaultValues<T>;
   className?: string;
+  onMethods?: (methods: UseFormReturn<T>) => void;
 };
 
 export const AppForm = <T extends FieldValues>({
@@ -26,11 +27,16 @@ export const AppForm = <T extends FieldValues>({
   children,
   defaultValues,
   className,
+  onMethods,
 }: AppFormProps<T>) => {
   const methods = useForm<T>({
     resolver: zodResolver(schema),
     defaultValues,
   });
+
+  useEffect(() => {
+    onMethods?.(methods);
+  }, [onMethods, methods]);
 
   return (
     <form onSubmit={methods.handleSubmit(onSubmit)} className={className}>
