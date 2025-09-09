@@ -58,6 +58,11 @@ export interface FormCheckboxProps<T extends FieldValues> {
 }
 
 // file upload
+
+export type UploadZoneCtx = {
+  maxFileSizeMB: number;
+};
+
 export interface FormImageUploadProps<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
@@ -65,4 +70,7 @@ export interface FormImageUploadProps<T extends FieldValues> {
   maxImages?: number;
   maxFileSizeMB?: number;
   label?: string;
+  labelClass?: string;
+  containerClass?: string;
+  uploadZoneInner?: React.ReactNode | ((ctx: UploadZoneCtx) => React.ReactNode);
 }

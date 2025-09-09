@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import React, { useEffect } from "react";
@@ -29,6 +30,8 @@ export const AppForm = <T extends FieldValues>({
   className,
   onMethods,
 }: AppFormProps<T>) => {
+  console.log("AppForm re-rendered");
+
   const methods = useForm<T>({
     resolver: zodResolver(schema),
     defaultValues,

@@ -4,16 +4,18 @@ import { Label } from "../ui/label";
 import { Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { Controller, FieldValues } from "react-hook-form";
-import { FormImageUploadProps } from "./app-form.types";
+import { FormImageUploadProps, UploadZoneCtx } from "./app-form.types";
 
-const AppFileUploader
- = <T extends FieldValues>({
+const AppFileUploader = <T extends FieldValues>({
   name,
   control,
   errors,
   label = "Upload Images",
   maxImages = 10,
   maxFileSizeMB = 10,
+  uploadZoneInner,
+  labelClass,
+  containerClass,
 }: FormImageUploadProps<T>) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -42,18 +44,42 @@ const AppFileUploader
     onChange(updated);
   };
 
+  const renderUploadZoneInner = () => {
+    const ctx: UploadZoneCtx = { maxFileSizeMB };
+
+    if (typeof uploadZoneInner === "function") return uploadZoneInner(ctx);
+    if (uploadZoneInner) return uploadZoneInner;
+
+    // default content
+    return (
+      <div className="flex flex-col items-center gap-2">
+        <Upload className="w-10 h-10" />
+        <span className="font-medium">Drop files or click to browse test</span>
+        <span className="text-sm">
+          Supported: PNG/JPG · up to {maxFileSizeMB}MB each test
+        </span>
+      </div>
+    );
+  };
+
   return (
     <Controller
       name={name}
       control={control}
       render={({ field: { value = [], onChange } }) => (
         <div className="space-y-4">
-          <Label className="text-sm font-medium text-[#0A400C]">
+          <Label className={labelClass ? labelClass : "text-sm font-medium"}>
             {label} (Max {maxImages})
           </Label>
 
           {/* Upload Zone */}
-          <div className="border-2 border-dashed border-[#B1AB86]/30 rounded-lg p-6 text-center">
+          <div
+            className={
+              containerClass
+                ? containerClass
+                : "border-2 border-dashed border-black/30 rounded-lg p-6 text-center"
+            }
+          >
             <input
               type="file"
               accept="image/*"
@@ -64,13 +90,7 @@ const AppFileUploader
               id={name}
             />
             <label htmlFor={name} className="cursor-pointer">
-              <Upload className="w-12 h-12 text-[#819067] mx-auto mb-4" />
-              <p className="text-[#0A400C] font-medium mb-2">
-                Click to upload images
-              </p>
-              <p className="text-sm text-[#819067]">
-                PNG, JPG, JPEG up to {maxFileSizeMB}MB each
-              </p>
+              {renderUploadZoneInner()}
             </label>
           </div>
 
@@ -82,12 +102,12 @@ const AppFileUploader
                   <img
                     src={preview}
                     alt={`Preview ${index + 1}`}
-                    className="w-full h-24 object-cover rounded-lg border border-[#B1AB86]/30"
+                    className="w-full h-24 object-cover rounded-lg border"
                   />
                   <button
                     type="button"
                     onClick={() => removeImage(index, value, onChange)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 cursor-pointer"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -108,5 +128,4 @@ const AppFileUploader
   );
 };
 
-export default AppFileUploader
-;
+export default AppFileUploader;

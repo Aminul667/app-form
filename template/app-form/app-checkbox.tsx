@@ -21,18 +21,20 @@ const AppCheckbox = <T extends FieldValues>({
       name={name}
       control={control}
       render={({ field }) => (
-        <div className={`flex items-center space-x-2 ${containerClass}`}>
-          <Checkbox
-            id={name}
-            checked={field.value ?? false}
-            onCheckedChange={field.onChange}
-            className={checkboxClass}
-            disabled={isDisabled}
-          />
-          <Label htmlFor={name} className={labelClass}>
-            {icon && <span className="mr-2">{icon}</span>}
-            {label}
-          </Label>
+        <div className="space-y-2">
+          <div className={`flex items-center space-x-2 ${containerClass}`}>
+            <Checkbox
+              id={name}
+              checked={field.value ?? false}
+              onCheckedChange={field.onChange}
+              className={checkboxClass}
+              disabled={isDisabled}
+            />
+            <Label htmlFor={name} className={labelClass}>
+              {icon && <span className="mr-2">{icon}</span>}
+              {label}
+            </Label>
+          </div>
           {errors?.[name] && (
             <p className="text-red-500 text-sm mt-1">
               {String(errors[name]?.message)}
