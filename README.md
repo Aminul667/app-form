@@ -120,8 +120,8 @@ export const exampleSchema = z.object({
       )
   ),
   images: z
-    .any() // <- accept anything first to prevent early error
-    .transform((val) => (Array.isArray(val) ? val : [])) // <- coerce undefined/null to []
+    .any() 
+    .transform((val) => (Array.isArray(val) ? val : [])) 
     .pipe(
       z
         .array(imageSchema)
@@ -149,11 +149,54 @@ import { Handshake } from "lucide-react";
 import AppFileUploader from "../app-form/app-file-uploader";
 
 const Example = () => {
+  const [formMethods, setFormMethods] = useState<UseFormReturn<any> | null>(
+    null
+  );
+
   const genderTypeConstants = [
     { value: "male", label: "Male" },
     { value: "female", label: "Female" },
     { value: "other", label: "Other" },
   ];
+
+  // Live watch: log multiple fields
+  useEffect(() => {
+    if (!formMethods) return;
+
+    const subscription = formMethods.watch((_, { name }) => {
+      if (name === "firstName" || name === "lastName" || name === "gender") {
+        const values = formMethods.getValues();
+        console.log("👀 Watched values:", {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          gender: values.gender,
+        });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [formMethods]);
+
+  const handleSetValues = () => {
+    if (!formMethods) return;
+
+    formMethods.setValue("firstName", "John");
+    formMethods.setValue("lastName", "Doe");
+    formMethods.setValue("age", 30);
+  };
+
+  const handleGetValues = () => {
+    if (!formMethods) return;
+
+    const values = formMethods.getValues();
+    console.log("📦 Current values:", values);
+  };
+
+  const handleReset = () => {
+    if (!formMethods) return;
+
+    formMethods.reset();
+  };
 
   const onSubmit = (data: TExample) => {
     console.log(data);
@@ -163,6 +206,7 @@ const Example = () => {
     <div>
       <h2>Example</h2>
       <AppForm<TExample>
+        onMethods={setFormMethods}
         schema={exampleSchema}
         defaultValues={{
           termsAndCondition: false,
@@ -232,11 +276,49 @@ const Example = () => {
                 name="images"
                 control={control}
                 label="Upload images"
+                labelClass="text-sm font-medium mb-2"
                 maxImages={10}
                 maxFileSizeMB={10}
                 errors={errors}
+                uploadZoneInner={({ maxFileSizeMB }) => (
+                  <div className="flex flex-col items-center gap-2">
+                    <Upload className="w-10 h-10" />
+                    <span className="font-medium">
+                      Drop files or click to browse test
+                    </span>
+                    <span className="text-sm">
+                      Supported: PNG/JPG · up to {maxFileSizeMB}MB each test
+                    </span>
+                  </div>
+                )}
               />
-              <Button type="submit" className="w-full">Save</Button>
+              <Button type="submit" className="w-full">
+                Save
+              </Button>
+
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={handleSetValues}
+                >
+                  Set Values
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleGetValues}
+                >
+                  Get Values
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={handleReset}
+                >
+                  Reset
+                </Button>
+              </div>
             </>
           );
         }}
@@ -396,7 +478,7 @@ import AppInputField from "../app-form/app-input-field";
 import { Button } from "../ui/button";
 import AppSelectItem from "../app-form/app-selectItem";
 import AppCheckbox from "../app-form/app-checkbox";
-import { Handshake } from "lucide-react";
+import { Handshake, Upload } from "lucide-react";
 import AppFileUploader from "../app-form/app-file-uploader";
 import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -529,9 +611,21 @@ const Example = () => {
                 name="images"
                 control={control}
                 label="Upload images"
+                labelClass="text-sm font-medium mb-2"
                 maxImages={10}
                 maxFileSizeMB={10}
                 errors={errors}
+                uploadZoneInner={({ maxFileSizeMB }) => (
+                  <div className="flex flex-col items-center gap-2">
+                    <Upload className="w-10 h-10" />
+                    <span className="font-medium">
+                      Drop files or click to browse test
+                    </span>
+                    <span className="text-sm">
+                      Supported: PNG/JPG · up to {maxFileSizeMB}MB each test
+                    </span>
+                  </div>
+                )}
               />
               <Button type="submit" className="w-full">
                 Save
