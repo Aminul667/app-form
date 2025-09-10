@@ -1,6 +1,6 @@
 {
   "name": "app-form",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Reusable form components with react-hook-form, zod, and shadcn/ui",
   "main": "./dist/index.js",
   "types": "dist/index.d.ts",
