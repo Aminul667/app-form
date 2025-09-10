@@ -9,7 +9,7 @@
     "template"
   ],
   "bin": {
-    "app-form": "./bin/index.js"
+    "app-form": "bin/index.js"
   },
   "scripts": {
     "build": "tsup"

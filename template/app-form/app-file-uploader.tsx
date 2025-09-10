@@ -2,9 +2,11 @@
 
 import { Label } from "../ui/label";
 import { Upload, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, FieldValues } from "react-hook-form";
 import { FormImageUploadProps, UploadZoneCtx } from "./app-form.types";
+
+type ImageItem = { id: string; file: File; url: string };
 
 const AppFileUploader = <T extends FieldValues>({
   name,
@@ -18,31 +20,100 @@ const AppFileUploader = <T extends FieldValues>({
   containerClass,
 }: FormImageUploadProps<T>) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [previews, setPreviews] = useState<string[]>([]);
+
+  // Track active object URLs to avoid stale-cleanup problems
+  const urlsRef = useRef<Set<string>>(new Set());
+
+  const [items, setItems] = useState<ImageItem[]>([]);
+  const dragIndexRef = useRef<number | null>(null);
+
+  const remainingSlots = Math.max(0, maxImages - items.length);
+  const makeId = () =>
+    crypto?.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
 
   const handleFiles = (
     files: FileList | null,
     onChange: (val: File[]) => void
   ) => {
-    if (!files) return;
-    const fileArray = Array.from(files).slice(0, maxImages);
+    if (!files || remainingSlots === 0) return;
+
+    const fileArray = Array.from(files).slice(0, remainingSlots);
     const validFiles = fileArray.filter(
-      (file) => file.size <= maxFileSizeMB * 1024 * 1024
+      (f) => f.size <= maxFileSizeMB * 1024 * 1024
     );
-    const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
-    setPreviews(newPreviews);
-    onChange(validFiles);
+
+    const newItems = validFiles.map((file) => {
+      const url = URL.createObjectURL(file); // create
+      urlsRef.current.add(url); // ✅ track
+      return { id: makeId(), file, url };
+    });
+
+    const next = [...items, ...newItems];
+    setItems(next);
+    onChange(next.map((it) => it.file));
   };
 
   const removeImage = (
     index: number,
-    images: File[],
+    value: File[],
     onChange: (val: File[]) => void
   ) => {
-    const updated = images.filter((_, i) => i !== index);
-    setPreviews((prev) => prev.filter((_, i) => i !== index));
-    onChange(updated);
+    setItems((prev) => {
+      const target = prev[index];
+      if (target) {
+        URL.revokeObjectURL(target.url); // ✅ revoke
+        urlsRef.current.delete(target.url); // ✅ untrack
+      }
+      const next = prev.filter((_, i) => i !== index);
+      onChange(next.map((it) => it.file));
+      return next;
+    });
   };
+
+  // Reorder helper
+  const reorder = <T,>(arr: T[], from: number, to: number) => {
+    const copy = arr.slice();
+    const [moved] = copy.splice(from, 1);
+    copy.splice(to, 0, moved);
+    return copy;
+  };
+
+  // Native DnD handlers
+  const onDragStart = (index: number) => () => {
+    dragIndexRef.current = index;
+  };
+
+  const onDragOver: React.DragEventHandler = (e) => {
+    e.preventDefault(); // allow drop
+  };
+
+  const onDrop =
+    (dropIndex: number, onChange: (val: File[]) => void) =>
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      const from = dragIndexRef.current;
+      if (from == null || from === dropIndex) return;
+
+      setItems((prev) => {
+        const next = reorder(prev, from, dropIndex);
+        onChange(next.map((it) => it.file));
+        return next;
+      });
+
+      dragIndexRef.current = null;
+    };
+
+  // Cleanup remaining object URLs on unmount (uses urlsRef, no stale deps)
+  useEffect(() => {
+    // snapshot the Set reference when the effect is set up
+    const urls = urlsRef.current;
+
+    return () => {
+      // revoke everything still tracked
+      urls.forEach((url) => URL.revokeObjectURL(url));
+      urls.clear();
+    };
+  }, []);
 
   const renderUploadZoneInner = () => {
     const ctx: UploadZoneCtx = { maxFileSizeMB };
@@ -94,23 +165,38 @@ const AppFileUploader = <T extends FieldValues>({
             </label>
           </div>
 
-          {/* Image Previews */}
-          {previews.length > 0 && (
+          {/* Preview grid with drag-and-drop */}
+          {items.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {previews.map((preview, index) => (
-                <div key={index} className="relative">
+              {items.map((it, index) => (
+                <div
+                  key={it.id}
+                  className="relative"
+                  draggable
+                  onDragStart={onDragStart(index)}
+                  onDragOver={onDragOver}
+                  onDrop={onDrop(index, onChange)}
+                >
                   <img
-                    src={preview}
+                    src={it.url}
                     alt={`Preview ${index + 1}`}
-                    className="w-full h-24 object-cover rounded-lg border"
+                    className="w-full h-24 object-cover rounded-lg border border-[#B1AB86]/30"
                   />
                   <button
                     type="button"
-                    onClick={() => removeImage(index, value, onChange)}
+                    onClick={() =>
+                      removeImage(index, value as File[], onChange)
+                    }
                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 cursor-pointer"
+                    aria-label="Remove image"
                   >
                     <X className="w-3 h-3" />
                   </button>
+
+                  {/* (Optional) small drag handle indicator */}
+                  <div className="absolute bottom-1 left-1 right-1 text-center text-[10px] bg-white/70 rounded px-1">
+                    drag to reorder
+                  </div>
                 </div>
               ))}
             </div>
