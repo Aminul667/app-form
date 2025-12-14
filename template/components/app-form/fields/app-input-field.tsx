@@ -1,8 +1,8 @@
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { cn } from "../../lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { FieldValues } from "react-hook-form";
-import { InputFieldProps } from "./app-form.types";
+import { InputFieldProps } from "../app-form.types";
 
 const AppInputField = <T extends FieldValues>({
   name,

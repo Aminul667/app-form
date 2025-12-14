@@ -11,11 +11,11 @@
     "template"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && chmod +x dist/cli.js",
     "prepublishOnly": "npm run build"
   },
   "keywords": [],
-  "author": "Rahat",
+  "author": "Md Aminul Islam (Rahat)",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^25.0.2",

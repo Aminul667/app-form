@@ -1,16 +1,15 @@
 "use client";
 
-import { Label } from "../ui/label";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-
+} from "@/components/ui/select";
+import { FormSelectProps } from "../app-form.types";
 import { Controller, FieldValues } from "react-hook-form";
-import { FormSelectProps } from "./app-form.types";
 
 const AppSelectItem = <T extends FieldValues, TValue = string>({
   name,

@@ -39,11 +39,7 @@ export const componentRegistry: Record<string, ComponentMeta> = {
    * -----------------------------
    */
   "app-form": {
-    files: [
-      "app-form/app-form.tsx",
-      "app-form/app-form.types.ts",
-      "app-form/index.ts",
-    ],
+    files: ["app-form/app-form.tsx", "app-form/app-form.types.ts"],
     description: "Core form wrapper using react-hook-form and zod",
   },
 

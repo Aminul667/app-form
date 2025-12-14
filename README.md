@@ -1,6 +1,6 @@
 # 🧩 app-form
 
-**Reusable form components for React using React Hook Form, Zod, Tailwind CSS, and Shadcn UI — with CLI scaffolding.**
+**A CLI for generating reusable, type-safe form components using React Hook Form, Zod, Tailwind CSS, and shadcn/ui.**
 
 ![npm](https://img.shields.io/npm/v/app-form)
 ![license](https://img.shields.io/npm/l/app-form)
@@ -13,9 +13,10 @@
 - ✅ Built with `react-hook-form` and `zod`
 - ✅ Uses `Tailwind CSS` + `shadcn/ui` components
 - ✅ Reusable form fields: Input, Select, Checkbox, Image Upload, etc.
-- ✅ Simple CLI scaffolding: `npx app-form init`
-- ✅ Smart path resolution (auto-detects `src/components/`, etc.)
-- ✅ Checks for required `shadcn` UI components
+- ✅ One-by-one component installation (shadcn-style)
+- ✅ Dependency-aware CLI (auto-installs internal deps)
+- ✅ Clear warnings for required shadcn & external packages
+- ✅ Works with Next.js App Router ("use client")
 
 ---
 
@@ -25,29 +26,66 @@
 npm install app-form
 ```
 
-## ⚙️ Scaffold Components
+## ⚙️ CLI Usage
 
-After installation, run the CLI:
-
-```bash
-npx app-form init
-```
-
-This will:
-
-- Detect or create your `components/ folder`
-- Scaffold form components into `components/app-form/`
-- Check for required `shadcn/ui` components like `input.tsx`, `label.tsx`, etc.
-
-**Optional Custom Path:**
+List available components
 
 ```bash
-npx app-form init --dir=src/shared/ui
+app-form list
 ```
+
+Example output:
+
+```bash
+app-form
+app-input-field
+app-checkbox
+app-select-item
+app-file-uploader
+```
+
+**Install a single component (recommended):**
+
+```bash
+app-form add app-input-field
+```
+
+What this does:
+
+- Installs app-form automatically if required
+- Copies files into `components/app-form/`
+- Warns if required `shadcn/ui` components are missing
+- Warns about external dependencies (e.g. `lucide-react`)
+
+**Install all components:**
+
+```bash
+app-form init
+```
+
+## 📁 Generated File Structure
+
+Once initialized, you'll get:
+
+<pre> 
+components/
+└── app-form/
+    ├── app-form.tsx
+    ├── app-form.types.ts
+    └── fields/
+        ├── app-input-field.tsx
+        ├── app-checkbox.tsx
+        ├── app-select-item.tsx
+        └── app-file-uploader.tsx
+</pre>
+
+All files are owned by your project and fully editable.
+
+---
 
 ## 🔌 Peer Dependencies
 
-You must have the following packages installed in your project:
+You must already have these installed in your app:
 
 ```bash
 npm install react react-dom react-hook-form zod @hookform/resolvers tailwindcss class-variance-authority
@@ -58,24 +96,6 @@ And make sure shadcn/ui components (like `input`, `label`, etc.) are generated.
 ```bash
 npx shadcn-ui@latest add input label checkbox select
 ```
-
-## 📁 Scaffolded Components
-
-Once initialized, you'll get:
-
-<pre> 
-components/ 
-└── app-form/
-    ├── app-input-field.tsx 
-    ├── app-select.tsx 
-    ├── app-checkbox.tsx 
-    ├── app-image-upload.tsx 
-    └── app-form.tsx
-</pre>
-
-These are modular, reusable, typed form components ready for integration.
-
----
 
 ## 🧠 Usage Example
 
@@ -120,8 +140,8 @@ export const exampleSchema = z.object({
       )
   ),
   images: z
-    .any() 
-    .transform((val) => (Array.isArray(val) ? val : [])) 
+    .any()
+    .transform((val) => (Array.isArray(val) ? val : []))
     .pipe(
       z
         .array(imageSchema)

@@ -1,10 +1,10 @@
 "use client";
 
-import { Label } from "../ui/label";
+import { Label } from "@/components/ui/label";
 import { Upload, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Controller, FieldValues } from "react-hook-form";
-import { FormImageUploadProps, UploadZoneCtx } from "./app-form.types";
+import { FormImageUploadProps, UploadZoneCtx } from "../app-form.types";
 
 type ImageItem = { id: string; file: File; url: string };
 
@@ -28,8 +28,7 @@ const AppFileUploader = <T extends FieldValues>({
   const dragIndexRef = useRef<number | null>(null);
 
   const remainingSlots = Math.max(0, maxImages - items.length);
-  const makeId = () =>
-    crypto?.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+  const makeId = () => crypto.randomUUID();
 
   const handleFiles = (
     files: FileList | null,
