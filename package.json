@@ -1,6 +1,6 @@
 {
   "name": "app-form",
-  "version": "1.0.15",
+  "version": "2.0.0",
   "description": "Reusable form components with react-hook-form, zod, and shadcn/ui",
   "type": "commonjs",
   "bin": {
