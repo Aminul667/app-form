@@ -685,7 +685,7 @@ const Example = () => {
 export default Example;
 ```
 
-## 🛠 Development
+<!-- ## 🛠 Development
 
 To work on this package locally:
 
@@ -699,10 +699,10 @@ To release a new version:
 
 ```bash
 
-```
+``` -->
 
 ## 📄 License
 
-MIT
+ISC
 
 Built by Md Aminul Islam (Rahat)

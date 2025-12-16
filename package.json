@@ -1,7 +1,7 @@
 {
   "name": "app-form",
   "version": "2.0.0",
-  "description": "Reusable form components with react-hook-form, zod, and shadcn/ui",
+  "description": "CLI to generate reusable, type-safe form components using react-hook-form and zod with ShadcnUI",
   "type": "commonjs",
   "bin": {
     "app-form": "dist/cli.js"
@@ -14,7 +14,24 @@
     "build": "tsup && chmod +x dist/cli.js",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aminul667/app-form"
+  },
+  "homepage": "https://app-form-client.vercel.app",
+  "keywords": [
+    "react",
+    "form",
+    "react-hook-form",
+    "zod",
+    "shadcn",
+    "shadcn-ui",
+    "cli",
+    "code-generator",
+    "nextjs",
+    "tailwind",
+    "reusable-form-component"
+  ],
   "author": "Md Aminul Islam (Rahat)",
   "license": "ISC",
   "devDependencies": {
