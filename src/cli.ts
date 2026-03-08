@@ -59,7 +59,7 @@ function installComponent(name: string) {
 
   if (!meta) {
     console.log(chalk.red(`❌ Unknown component: ${name}`));
-    console.log(chalk.blue("👉 Run: app-form list"));
+    console.log(chalk.blue("👉 Run: npx app-form list"));
     process.exit(1);
   }
 
@@ -151,7 +151,7 @@ function run() {
     case "add":
       if (!arg) {
         console.log(chalk.red("❌ Missing component name."));
-        console.log(chalk.blue("👉 Usage: app-form add app-input-field"));
+        console.log(chalk.blue("👉 Usage: npx app-form add app-input-field"));
         return;
       }
       installComponent(arg);
@@ -164,9 +164,9 @@ function run() {
     default:
       console.log(`
 ${chalk.cyan("Usage:")}
-  app-form list
-  app-form add <component>
-  app-form init
+  npx app-form list
+  npx app-form add <component>
+  npx app-form init
 `);
   }
 }

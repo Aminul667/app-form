@@ -57,6 +57,21 @@ export interface FormCheckboxProps<T extends FieldValues> {
   isDisabled?: boolean;
 }
 
+export interface InputFieldArrayProps<T extends FieldValues> {
+  name: Path<T>;
+  control: Control<T>;
+  label?: string;
+  placeholder?: string;
+  type?: string;
+  errors?: FieldErrors<T>;
+  containerClass?: string;
+  inputClass?: string;
+  labelClass?: string;
+  addButtonText?: string;
+  addButtonClass?: string;
+  minFields?: number;
+}
+
 // file upload
 
 export type UploadZoneCtx = {

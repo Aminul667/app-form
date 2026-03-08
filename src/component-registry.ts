@@ -82,6 +82,20 @@ export const componentRegistry: Record<string, ComponentMeta> = {
 
   /**
    * -----------------------------
+   * Input Field Array
+   * -----------------------------
+   */
+  "app-input-field-array": {
+    files: ["app-form/fields/app-input-field-array.tsx"],
+    dependsOn: ["app-form"],
+    shadcn: ["input", "label", "button"],
+    external: ["lucide-react"],
+    requires: ["lib/utils.ts"],
+    description: "Dynamic array of input fields with add/remove functionality",
+  },
+
+  /**
+   * -----------------------------
    * File / Image Uploader
    * -----------------------------
    */

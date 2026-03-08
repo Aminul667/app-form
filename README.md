@@ -31,7 +31,7 @@ npm install app-form
 List available components
 
 ```bash
-app-form list
+npx app-form list
 ```
 
 Example output:
@@ -42,12 +42,13 @@ app-input-field
 app-checkbox
 app-select-item
 app-file-uploader
+app-input-field-array
 ```
 
 **Install a single component (recommended):**
 
 ```bash
-app-form add app-input-field
+npx app-form add app-input-field
 ```
 
 What this does:
@@ -60,7 +61,7 @@ What this does:
 **Install all components:**
 
 ```bash
-app-form init
+npx app-form init
 ```
 
 ## 📁 Generated File Structure
@@ -74,6 +75,7 @@ components/
     ├── app-form.types.ts
     └── fields/
         ├── app-input-field.tsx
+        ├── app-input-field-array.tsx
         ├── app-checkbox.tsx
         ├── app-select-item.tsx
         └── app-file-uploader.tsx
