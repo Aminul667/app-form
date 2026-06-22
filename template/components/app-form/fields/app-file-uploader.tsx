@@ -52,11 +52,7 @@ const AppFileUploader = <T extends FieldValues>({
     onChange(next.map((it) => it.file));
   };
 
-  const removeImage = (
-    index: number,
-    value: File[],
-    onChange: (val: File[]) => void
-  ) => {
+  const removeImage = (index: number, onChange: (val: File[]) => void) => {
     setItems((prev) => {
       const target = prev[index];
       if (target) {
@@ -124,9 +120,9 @@ const AppFileUploader = <T extends FieldValues>({
     return (
       <div className="flex flex-col items-center gap-2">
         <Upload className="w-10 h-10" />
-        <span className="font-medium">Drop files or click to browse test</span>
+        <span className="font-medium">Drop files or click to browse</span>
         <span className="text-sm">
-          Supported: PNG/JPG · up to {maxFileSizeMB}MB each test
+          Supported: PNG/JPG · up to {maxFileSizeMB}MB each
         </span>
       </div>
     );
@@ -136,7 +132,7 @@ const AppFileUploader = <T extends FieldValues>({
     <Controller
       name={name}
       control={control}
-      render={({ field: { value = [], onChange } }) => (
+      render={({ field: { onChange } }) => (
         <div className="space-y-4">
           <Label className={labelClass ? labelClass : "text-sm font-medium"}>
             {label} (Max {maxImages})
@@ -183,9 +179,7 @@ const AppFileUploader = <T extends FieldValues>({
                   />
                   <button
                     type="button"
-                    onClick={() =>
-                      removeImage(index, value as File[], onChange)
-                    }
+                    onClick={() => removeImage(index, onChange)}
                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 cursor-pointer"
                     aria-label="Remove image"
                   >

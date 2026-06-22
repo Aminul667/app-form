@@ -39,8 +39,14 @@ Example output:
 ```bash
 app-form
 app-input-field
+app-textarea
 app-checkbox
+app-checkbox-group
+app-switch
+app-radio-group
 app-select-item
+app-combobox
+app-multi-select
 app-file-uploader
 app-input-field-array
 ```
@@ -76,8 +82,14 @@ components/
     └── fields/
         ├── app-input-field.tsx
         ├── app-input-field-array.tsx
+        ├── app-textarea.tsx
         ├── app-checkbox.tsx
+        ├── app-checkbox-group.tsx
+        ├── app-switch.tsx
+        ├── app-radio-group.tsx
         ├── app-select-item.tsx
+        ├── app-combobox.tsx
+        ├── app-multi-select.tsx
         └── app-file-uploader.tsx
 </pre>
 

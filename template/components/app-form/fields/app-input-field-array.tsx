@@ -26,7 +26,8 @@ const AppInputFieldArray = <T extends FieldValues>({
     name: name as ArrayPath<T>,
   });
 
-  // Initialize with minFields if empty
+  // Initialize with minFields if empty. Runs once on mount only — adding the
+  // referenced values to the deps would re-seed the array as the user edits it.
   useEffect(() => {
     if (fields.length < minFields) {
       const fieldsToAdd = minFields - fields.length;
@@ -34,6 +35,7 @@ const AppInputFieldArray = <T extends FieldValues>({
         append("" as never);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const defaultInputClass =

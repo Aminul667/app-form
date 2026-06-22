@@ -30,16 +30,18 @@ export const AppForm = <T extends FieldValues>({
   className,
   onMethods,
 }: AppFormProps<T>) => {
-  console.log("AppForm re-rendered");
-
   const methods = useForm<T>({
     resolver: zodResolver(schema),
     defaultValues,
   });
 
+  // `methods` is ref-stable across renders, so lift it to the parent once on
+  // mount. Depending on `onMethods` here would re-fire whenever the parent
+  // passes an inline callback.
   useEffect(() => {
     onMethods?.(methods);
-  }, [onMethods, methods]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <form onSubmit={methods.handleSubmit(onSubmit)} className={className}>

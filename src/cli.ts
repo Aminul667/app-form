@@ -79,21 +79,6 @@ function installComponent(name: string) {
   });
 
   // Warnings (after install)
-  if (meta.shadcn?.length) {
-    console.log(
-      chalk.yellow(
-        `⚠️ Requires shadcn/ui components: ${meta.shadcn.join(", ")}`
-      )
-    );
-    console.log(
-      chalk.blue(
-        `👉 Run (If you don't have the required components already): npx shadcn-ui@latest add ${meta.shadcn.join(
-          " "
-        )}`
-      )
-    );
-  }
-
   if (meta.external?.length) {
     console.log(
       chalk.yellow(
@@ -111,6 +96,38 @@ function installComponent(name: string) {
       }
     });
   }
+}
+
+/* ---------------------------------- */
+/* shadcn/ui summary                   */
+/* ---------------------------------- */
+
+function printShadcnSummary() {
+  // Components installed in this run that declare shadcn/ui requirements
+  const withShadcn = [...installed].filter(
+    (name) => componentRegistry[name]?.shadcn?.length
+  );
+
+  if (withShadcn.length === 0) return;
+
+  console.log(chalk.cyan("\n🎨 Required shadcn/ui components:\n"));
+
+  const all = new Set<string>();
+
+  withShadcn.forEach((name) => {
+    const shadcn = componentRegistry[name].shadcn!;
+    shadcn.forEach((c) => all.add(c));
+    console.log(`  ${chalk.green(name)} → ${shadcn.join(", ")}`);
+  });
+
+  console.log(
+    chalk.blue(
+      `\n👉 Install any you don't already have:\n   npx shadcn@latest add ${[
+        ...all,
+      ].join(" ")}`
+    )
+  );
+  console.log("");
 }
 
 /* ---------------------------------- */
@@ -134,6 +151,7 @@ function listComponents() {
 function initAll() {
   console.log(chalk.cyan("\n⚙️ Installing all app-form components...\n"));
   Object.keys(componentRegistry).forEach(installComponent);
+  printShadcnSummary();
 }
 
 /* ---------------------------------- */
@@ -155,6 +173,7 @@ function run() {
         return;
       }
       installComponent(arg);
+      printShadcnSummary();
       break;
 
     case "init":

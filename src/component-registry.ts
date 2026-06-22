@@ -82,6 +82,86 @@ export const componentRegistry: Record<string, ComponentMeta> = {
 
   /**
    * -----------------------------
+   * Textarea Field
+   * -----------------------------
+   */
+  "app-textarea": {
+    files: ["app-form/fields/app-textarea.tsx"],
+    dependsOn: ["app-form"],
+    shadcn: ["textarea", "label"],
+    requires: ["lib/utils.ts"],
+    description: "Multi-line textarea field integrated with AppForm",
+  },
+
+  /**
+   * -----------------------------
+   * Switch Field
+   * -----------------------------
+   */
+  "app-switch": {
+    files: ["app-form/fields/app-switch.tsx"],
+    dependsOn: ["app-form"],
+    shadcn: ["switch", "label"],
+    description: "Toggle switch field integrated with AppForm",
+  },
+
+  /**
+   * -----------------------------
+   * Radio Group Field
+   * -----------------------------
+   */
+  "app-radio-group": {
+    files: ["app-form/fields/app-radio-group.tsx"],
+    dependsOn: ["app-form"],
+    shadcn: ["radio-group", "label"],
+    requires: ["lib/utils.ts"],
+    description: "Single-choice radio group field integrated with AppForm",
+  },
+
+  /**
+   * -----------------------------
+   * Checkbox Group Field
+   * -----------------------------
+   */
+  "app-checkbox-group": {
+    files: ["app-form/fields/app-checkbox-group.tsx"],
+    dependsOn: ["app-form"],
+    shadcn: ["checkbox", "label"],
+    requires: ["lib/utils.ts"],
+    description: "Multiple-choice checkbox group field integrated with AppForm",
+  },
+
+  /**
+   * -----------------------------
+   * Combobox Field (searchable single-select)
+   * -----------------------------
+   */
+  "app-combobox": {
+    files: ["app-form/fields/app-combobox.tsx"],
+    dependsOn: ["app-form"],
+    shadcn: ["popover", "command", "label"],
+    external: ["lucide-react"],
+    requires: ["lib/utils.ts"],
+    description: "Searchable single-select combobox integrated with AppForm",
+  },
+
+  /**
+   * -----------------------------
+   * Multi-Select Field (searchable multi-select)
+   * -----------------------------
+   */
+  "app-multi-select": {
+    files: ["app-form/fields/app-multi-select.tsx"],
+    dependsOn: ["app-form"],
+    shadcn: ["popover", "command", "label"],
+    external: ["lucide-react"],
+    requires: ["lib/utils.ts"],
+    description:
+      "Searchable multi-select with chips and optional selection limit",
+  },
+
+  /**
+   * -----------------------------
    * Input Field Array
    * -----------------------------
    */
