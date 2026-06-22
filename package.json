@@ -11,7 +11,7 @@
     "template"
   ],
   "scripts": {
-    "build": "tsup && chmod +x dist/cli.js",
+    "build": "tsup && (chmod +x dist/cli.js || echo skip-chmod)",
     "prepublishOnly": "npm run build"
   },
   "repository": {
